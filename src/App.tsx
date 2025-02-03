@@ -1,7 +1,7 @@
 import './App.css'
 import MySelect from "./components/MySelect.tsx";
 
-const options = [
+export const options = [
     {label: 'Option 1',                             value: 1},
     {label: 'Option with icon',                     value: 2},
     {label: 'Long Long Option 3',                     value: 3},
