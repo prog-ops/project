@@ -26,13 +26,17 @@ type MySelectProps = PropsWithChildren<{
     onSelect: (selected: Option[]) => void;
     searchable?: boolean;
     zIndex?: number;
+    multiple?: boolean;
+    outlined?: boolean;
 }>
 
 const MySelect: React.FC<MySelectProps> = ({
-                                                                   options,
-                                                                   onSelect,
-                                                                   searchable = true,
-                                                                   zIndex = 1001,
+                                               options,
+                                               onSelect,
+                                               searchable = true,
+                                               zIndex = 1001,
+                                               multiple = true,
+                                               outlined = true,
                                                                }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [searchTerm, setSearchTerm] = useState('');
@@ -121,7 +125,7 @@ const MySelect: React.FC<MySelectProps> = ({
                     )}
                     fullWidth
                     displayEmpty
-                    multiple
+                    multiple={multiple}
                     open={false}
                     onOpen={() => setAnchorEl(selectRef.current)}
                     ref={selectRef}
@@ -155,6 +159,7 @@ const MySelect: React.FC<MySelectProps> = ({
                             })}
                         </div>
                     )}
+                    variant={outlined ? 'outlined' : 'filled'}
                 >
                     {options.map((option) => (
                         <MenuItem key={option.value} onClick={() => handleSelect(option)}>
