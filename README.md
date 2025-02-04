@@ -1,4 +1,4 @@
-# Project Name
+# React Select Application
 
 ## Overview
 
