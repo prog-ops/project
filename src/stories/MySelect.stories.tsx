@@ -1,8 +1,13 @@
 import {Meta, StoryObj,} from '@storybook/react';
 import { fn } from '@storybook/test';
-import MySelect, { Option, MySelectProps } from "../components/MySelect.tsx";
+import MySelect from "../components/MySelect.tsx";
 import {options} from "../App.tsx";
 import {ComponentProps, useState} from "react";
+
+interface Option {
+    label: string;
+    value: number;
+}
 
 type StoryProps = ComponentProps<typeof MySelect> & {
     withSearch?: boolean;
