@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect, useCallback} from 'react';
+import React, {useState, useRef, useEffect, useCallback, PropsWithChildren} from 'react';
 import {
     TextField,
     Menu,
@@ -18,15 +18,15 @@ import {
 
 interface Option {
     label: string;
-    value: any;
+    value: number;
 }
 
-interface MySelectProps {
+type MySelectProps = PropsWithChildren<{
     options: Option[];
     onSelect: (selected: Option[]) => void;
     searchable?: boolean;
     zIndex?: number;
-}
+}>
 
 const MySelect: React.FC<MySelectProps> = ({
                                                                    options,
