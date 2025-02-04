@@ -75,15 +75,41 @@ const MySelect: React.FC<MySelectProps> = ({
     const highlightText = (text: string, highlight: string) => {
         if (!highlight.trim()) return text;
 
-        const terms = highlight.toLowerCase().split(/\s+/);
-        let highlighted = text;
+        const searchTerms = highlight.trim().toLowerCase().split(/\s+/);
+        const textLower = text.toLowerCase();
+        const highlightedChars = new Array(text.length).fill(false);
 
-        terms.forEach(term => {
-            const regex = new RegExp(`(${term})`, 'gi');
-            highlighted = highlighted.replace(regex, '<mark>$1</mark>');
+        // Mark characters to highlight
+        searchTerms.forEach(term => {
+            let currentIndex = 0;
+            for (let i = 0; i < textLower.length; i++) {
+                if (textLower[i] === term[currentIndex]) {
+                    highlightedChars[i] = true;
+                    currentIndex++;
+                    if (currentIndex >= term.length) break;
+                }
+            }
         });
 
-        return <span dangerouslySetInnerHTML={{__html: highlighted}}/>;
+        // Build highlighted string
+        const result: string[] = [];
+        let inMark = false;
+
+        for (let i = 0; i < text.length; i++) {
+            if (highlightedChars[i] && !inMark) {
+                result.push('<mark>');
+                inMark = true;
+            }
+            if (!highlightedChars[i] && inMark) {
+                result.push('</mark>');
+                inMark = false;
+            }
+            result.push(text[i]);
+        }
+
+        if (inMark) result.push('</mark>');
+
+        return <span dangerouslySetInnerHTML={{ __html: result.join('') }} />;
     };
 
     const handleChipDelete = (valueToDelete: any) => {
