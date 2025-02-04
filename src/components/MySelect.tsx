@@ -15,6 +15,7 @@ import {
     KeyboardArrowDown,
     Search
 } from "@mui/icons-material";
+import {highlightText} from "../utils/highlightText.tsx";
 
 interface Option {
     label: string;
@@ -72,45 +73,7 @@ const MySelect: React.FC<MySelectProps> = ({
         setSearchTerm(e.target.value);
     }, []);
 
-    const highlightText = (text: string, highlight: string) => {
-        if (!highlight.trim()) return text;
 
-        const searchTerms = highlight.trim().toLowerCase().split(/\s+/);
-        const textLower = text.toLowerCase();
-        const highlightedChars = new Array(text.length).fill(false);
-
-        // Mark characters to highlight
-        searchTerms.forEach(term => {
-            let currentIndex = 0;
-            for (let i = 0; i < textLower.length; i++) {
-                if (textLower[i] === term[currentIndex]) {
-                    highlightedChars[i] = true;
-                    currentIndex++;
-                    if (currentIndex >= term.length) break;
-                }
-            }
-        });
-
-        // Build highlighted string
-        const result: string[] = [];
-        let inMark = false;
-
-        for (let i = 0; i < text.length; i++) {
-            if (highlightedChars[i] && !inMark) {
-                result.push('<mark>');
-                inMark = true;
-            }
-            if (!highlightedChars[i] && inMark) {
-                result.push('</mark>');
-                inMark = false;
-            }
-            result.push(text[i]);
-        }
-
-        if (inMark) result.push('</mark>');
-
-        return <span dangerouslySetInnerHTML={{ __html: result.join('') }} />;
-    };
 
     const handleChipDelete = (valueToDelete: any) => {
         setSelectedOptions(prev => {
