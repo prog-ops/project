@@ -1,4 +1,3 @@
-import './App.css'
 import MySelect from "./components/MySelect.tsx";
 
 export const options = [
