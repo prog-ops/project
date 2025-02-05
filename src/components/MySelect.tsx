@@ -59,11 +59,19 @@ const MySelect: React.FC<MySelectProps> = ({
 
     const handleSelect = (option: Option) => {
         setSelectedOptions(prev => {
-            const newSelection = prev.includes(option)
-                ? prev.filter(o => o !== option)
-                : [...prev, option];
-            onSelect(newSelection);
-            return newSelection;
+            if (multiple) {
+                const newSelection = prev.includes(option)
+                    ? prev.filter(o => o !== option)
+                    : [...prev, option];
+                onSelect(newSelection);
+                return newSelection;
+            } else {
+                // Single selection
+                const isSelected = prev.some(o => o.value === option.value);
+                const newSelection = isSelected ? [] : [option];
+                onSelect(newSelection);
+                return newSelection;
+            }
         });
         setForceFocus(prev => !prev); // Force focus retention
     };
@@ -122,30 +130,34 @@ const MySelect: React.FC<MySelectProps> = ({
                     onClick={handleClick}
                     renderValue={(selected) => (
                         <div style={{display: 'flex', gap: 4, flexWrap: 'wrap'}}>
-                            {selected.map((value) => {
-                                const option = options.find(opt => opt.value === value);
-                                return (
-                                    <Chip
-                                        key={value}
-                                        label={option?.label}
-                                        onDelete={(e) => {
-                                            e.stopPropagation();
-                                            handleChipDelete(value);
-                                        }}
-                                        // onMouseDown to let chip deletable
-                                        onMouseDown={(event) => {
-                                            event.stopPropagation();
-                                        }}
-                                        deleteIcon={<CancelOutlined/>}
-                                        sx={{
-                                            '& .MuiChip-deleteIcon': {
-                                                marginLeft: '-8px',
-                                                marginRight: '4px'
-                                            }
-                                        }}
-                                    />
-                                );
-                            })}
+                            {multiple
+                                ? selected.map((value) => {
+                                    const option = options.find(opt => opt.value === value);
+                                    return (
+                                        <Chip
+                                            key={value}
+                                            label={option?.label}
+                                            onDelete={(e) => {
+                                                e.stopPropagation();
+                                                handleChipDelete(value);
+                                            }}
+                                            // onMouseDown to let chip deletable
+                                            onMouseDown={(event) => {
+                                                event.stopPropagation();
+                                            }}
+                                            deleteIcon={<CancelOutlined/>}
+                                            sx={{
+                                                '& .MuiChip-deleteIcon': {
+                                                    marginLeft: '-8px',
+                                                    marginRight: '4px'
+                                                }
+                                            }}
+                                        />
+                                    );
+                                })
+                                : // Single selection without chip
+                                selected[0] && options.find(opt => opt.value === selected[0])?.label
+                            }
                         </div>
                     )}
                     variant={outlined ? 'outlined' : 'filled'}
