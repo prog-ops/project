@@ -61,6 +61,7 @@ const Template: React.FC<StoryProps> = (args) => {
             onSelect={handleSelect}
             searchable={args.withSearch}
             zIndex={args.zIndex}
+            multiple={args.multiple}
         />
     );
 };
@@ -106,6 +107,13 @@ export const SingleSelection: Story = {
         outlined: true,
         zIndex: 1001,
     },
+    parameters: {
+        docs: {
+            description: {
+                story: 'Only allows selecting one option at a time. Clicking a selected option will clear the selection.'
+            }
+        }
+    }
 };
 
 // Story with no outline
